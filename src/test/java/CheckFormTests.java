@@ -2,6 +2,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.github.javafaker.service.FakeValuesService;
 import com.github.javafaker.service.RandomService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.Locale;
@@ -15,9 +16,6 @@ public class CheckFormTests {
     Faker faker = new Faker();
     FakeValuesService fakeValuesService = new FakeValuesService(
             new Locale("en-GB"), new RandomService());
-
-
-
     String firstName = faker.name().firstName();
     String lastName = faker.name().lastName();
     String mail = fakeValuesService.bothify("????##@gmail.com");
@@ -36,10 +34,14 @@ public class CheckFormTests {
     String city = "Agra";
     String fileName = "1.png";
 
+    @BeforeAll
+    static void setUp() {
+        Configuration.startMaximized = true;
+    }
+
     @Test
     public void fillForm() {
 //        Заполнение и сохранение формы
-        Configuration.startMaximized = true;
         open("https://demoqa.com/automation-practice-form");
         $("#firstName").setValue(firstName);
         $("#lastName").setValue(lastName);
