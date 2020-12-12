@@ -1,11 +1,13 @@
-plugins {
-    id 'java'
-    id 'application'
-    id 'io.qameta.allure' version '2.8.1'
+buildscript {
+    repositories {
+        jcenter()
+    }
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+plugins {
+    id 'java-library'
+    id 'application'
+    id 'io.qameta.allure' version '2.8.1'}
 
 repositories {
     mavenCentral()
@@ -26,21 +28,22 @@ allure {
     }
 }
 
+dependencies {
+    testImplementation "org.aspectj:aspectjweaver:1.9.5"
+    testImplementation "com.codeborne:selenide:${selenideVersion}"
+    testImplementation "io.qameta.allure:allure-selenide:${allureVersion}"
+    testImplementation "com.github.javafaker:javafaker:1.0.2"
+    testImplementation "ch.qos.logback:logback-classic:1.2.3"
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-dependencies {
-    testImplementation "org.aspectj:aspectjweaver:1.9.5"
-    testImplementation "com.github.javafaker:javafaker:1.0.2"
-    testImplementation "io.qameta.allure:allure-selenide:${allureVersion}"
-
-    testImplementation 'com.codeborne:selenide:5.16.2'
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.7.0"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.7.0"
-
-}
-
 test {
+    systemProperties = System.properties
     useJUnitPlatform()
 }
